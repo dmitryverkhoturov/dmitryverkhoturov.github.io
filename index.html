@@ -35,7 +35,7 @@ footer{text-align:center;color:var(--mut);font-size:12px;padding:0 0 48px}
 @media(max-width:640px){.grid,.gal{grid-template-columns:1fr}.box{padding:16px}}
 </style></head><body><div class="w">
 <main id="app"></main>
-<footer>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a></footer>
+<footer>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a> · GitHub: <a href="https://github.com/dmitryverkhoturov">dmitryverkhoturov</a></footer>
 </div>
 <script>
 const P=[
@@ -66,7 +66,7 @@ const P=[
  'GPT extracts the key comments by topic into JSON with timestamps for the interface.',
  'Similar feedback is clustered on BERT embeddings, and GPT gives each group a name.']},
 {id:'calendar',t:'Circular Calendar',img:['calendar.jpg','calendar2.jpg'],s:'The year as one circle, made with AI agents',
- m:'Personal project · 2026 · in progress',
+ m:'Personal project · 2026 · in progress · <a href="https://github.com/dmitryverkhoturov/circular-calendar-app">GitHub</a>',
  a:['An Android calendar that shows the year as a circle. Months and days go around the ring, “now” is at the top. Pinch to zoom from the whole year down to a day, an hour or a second; twist with two fingers to rotate. Events come from the phone’s calendar.',
  'The point is how it feels in the hand: it should react instantly and be fun to spin, at the full refresh rate of the screen.',
  'I don’t write the code myself. The app is built by AI agents that I direct through a written spec.'],
@@ -99,7 +99,7 @@ const P=[
 const app=document.getElementById('app');
 function home(){app.innerHTML=`<section class="hero"><h1>Dmitry Verkhoturov</h1>
 <p>AI Engineer · Agent Memory Systems, Multimodal Search &amp; LLM Pipelines</p>
-<p>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a></p></section>
+<p>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a> · GitHub: <a href="https://github.com/dmitryverkhoturov">dmitryverkhoturov</a></p></section>
 <section class="box"><div class="grid">${P.map(p=>`
 <a class="c" href="#${p.id}"><div class="fr"><img src="img/${p.img[0]}" alt="${p.t}"></div>
 <div class="t"><b>${p.t}</b><span class="ar">→</span></div><div class="d">${p.s}</div></a>`).join('')}
