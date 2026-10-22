@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dmitry Verkhoturov</title>
+<style>
+@font-face{font-family:Newsreader;src:url(fonts/newsreader.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:Inter;src:url(fonts/inter.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{--bg:#fff;--fg:#111;--mut:#777;--line:#ececec;--card:#f5f5f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e0e;--fg:#eee;--mut:#8a8a8a;--line:#222;--card:#171717}}
+:root[data-theme="dark"]{--bg:#0e0e0e;--fg:#eee;--mut:#8a8a8a;--line:#222;--card:#171717}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.65 Inter,sans-serif}
+a{color:inherit}
+.w{max-width:1000px;margin:0 auto;padding:0 16px}
+.hero{text-align:center;padding:72px 0 48px}
+h1{font:400 clamp(40px,6.5vw,60px)/1.05 Newsreader,Georgia,serif;letter-spacing:-.02em;margin:0 0 14px}
+.hero p{color:var(--mut);margin:0 0 6px;font-size:13px}.hero a{color:var(--fg)}
+.box{border:1px solid var(--line);border-radius:6px;padding:32px;margin-bottom:56px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.c{display:block;background:var(--card);border-radius:4px;overflow:hidden;text-decoration:none}
+.fr{aspect-ratio:16/10;background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.fr img{width:100%;height:100%;object-fit:contain;display:block}
+.c .fr{border:0;border-radius:0}
+.c .t{display:flex;justify-content:space-between;align-items:baseline;padding:12px 14px 2px;font-size:13px}
+.c .t b{font-weight:500}
+.ar{transition:.2s;color:var(--mut)}.c:hover .ar{transform:translateX(3px)}
+.c .d{padding:0 14px 14px;color:var(--mut);font-size:12.5px}
+.back{display:inline-block;color:var(--mut);font-size:12px;margin:8px 0 28px;text-decoration:none}
+.pg h2{font:400 clamp(34px,6vw,52px)/1.05 Newsreader,Georgia,serif;margin:0 0 8px}
+.pg .m{color:var(--mut);font-size:12.5px;margin:0 0 28px}
+.pg .tx{max-width:660px}
+.pg h3{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:500;margin:28px 0 8px}
+.pg ul{padding-left:18px;margin:0}.pg li{margin-bottom:6px}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 32px}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:0 0 48px}
+@media(max-width:640px){.grid,.gal{grid-template-columns:1fr}.box{padding:16px}}
+</style></head><body><div class="w">
+<main id="app"></main>
+<footer>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a></footer>
+</div>
+<script>
+const P=[
+{id:'binat',t:'Binat',img:['binat.jpg'],s:'Search inside videos by plain-text queries',
+ m:'AI Engineer · 2025–2026 · <a href="https://binat.us">binat.us</a>',
+ a:['Binat is a video annotation platform. Its users have large video libraries and need to find specific moments in them without watching everything.',
+ 'I built the search part. You type a query like “the saddest scene of the film” and get the exact fragment. It works because every video is first described by a set of models (what is said, who is in the frame, what objects and places are there, what happens), and the search runs over those descriptions.'],
+ b:['12 models annotate each video: transcription, scene descriptions, objects, actors, locations, OCR. Their output becomes text embeddings in an Elasticsearch index.',
+ 'FastAPI service with 7 endpoints: search for moments, search the library, similar videos, recommendations, indexing.',
+ 'Response time went from 4 s to 0.8 s after I replaced cluster-based search with an HNSW index.',
+ 'Wrote a benchmark for search quality. Compared MiniLM, BGE and e5-base and reworked preprocessing: MRR 0.18 → 0.55.',
+ 'Separately built an agentic RAG prototype for searching company documents, slides and meeting recordings (own tool-calling loop). It went to the client as a working demo.']},
+{id:'syt',t:'StartYourTime',img:['syt.jpg'],s:'Clothing detection and actor clips for Wink',
+ m:'AI Engineer · 2023–2025 · <a href="https://startyourtime.com">startyourtime.com</a>',
+ a:['StartYourTime makes an interactive feed for Wink, a streaming service with 9M+ paying subscribers. You pause a film, scan a QR code, and your phone shows who is in the frame and where to buy what they wear. The feed ran on 1,000+ titles.',
+ 'I worked on the models and data: finding clothes in film frames, and cutting short clips around a chosen actor.'],
+ b:['Clothing detection and segmentation on YOLOv8: collected and cleaned datasets, annotation in Label Studio, experiments in ClearML.',
+ 'On a fixed test of 2,000 film frames: detection mAP50-95 +11%, segmentation mask mAP +42%.',
+ 'Annotation got about 3× faster: the previous model pre-labels frames, Segment Anything turns boxes into masks.',
+ 'Pipeline that cuts short vertical clips around one actor: finds scenes, recognises the actor with our own face-embedding model (ConvNeXtV2 + AdaFace, trained on 3.3M images), keeps dialogues whole.']},
+{id:'pyxidis',t:'Pyxidis',img:['pyxidis.jpg','pyxidis2.jpg'],s:'Playtest videos turned into a report',
+ m:'Tech Lead · 2023 · <a href="https://www.linkedin.com/company/pyxidistech">LinkedIn</a>',
+ a:['Game studios run playtests and then someone watches hours of recordings to understand what players felt and said. Most of that is manual work, and the conclusions depend on who watched.',
+ 'Pyxidis records the tester’s face, screen and voice while they play, and builds a report: emotions over the session, the moments where they peak, and the player’s comments sorted by topic — graphics, combat, plot, bugs. Every comment links to its moment in the video. Comments from different testers that say the same thing are grouped together.'],
+ b:['Led the technical side of the startup: architecture, Django backend, S3, Docker. Took it from a prototype to a pilot.',
+ 'Recording app for camera, screen and sound; accounts for studios and testers; build versions.',
+ 'Emotions from the face with EmotiEffLib, speech to text with Whisper.',
+ 'GPT extracts the key comments by topic into JSON with timestamps for the interface.',
+ 'Similar feedback is clustered on BERT embeddings, and GPT gives each group a name.']},
+{id:'calendar',t:'Circular Calendar',img:['calendar.jpg','calendar2.jpg'],s:'The year as one circle, made with AI agents',
+ m:'Personal project · 2026 · in progress',
+ a:['An Android calendar that shows the year as a circle. Months and days go around the ring, “now” is at the top. Pinch to zoom from the whole year down to a day, an hour or a second; twist with two fingers to rotate. Events come from the phone’s calendar.',
+ 'The point is how it feels in the hand: it should react instantly and be fun to spin, at the full refresh rate of the screen.',
+ 'I don’t write the code myself. The app is built by AI agents that I direct through a written spec.'],
+ b:['Agent loop with feedback: pick a task, check the current state, do it, verify it, pick the next one. Verification is done by agents that use the app on an emulator — swiping, zooming, taking screenshots — and look for bugs.',
+ 'A benchmark for smoothness: frame timings and a detector for visual seams, so the agents optimise what the eye actually sees.',
+ 'To hit the frame rate we built a small game-engine-style renderer: the circle is drawn into tiles at several zoom levels in background threads, and each frame only moves them.',
+ 'Now 70–90 fps on my phone, under 1 ms of drawing per frame. Seven themes, a home screen widget, the Solar System to scale in the centre.']},
+{id:'footballogy',t:'Footballogy',img:['footballogy3.jpg','footballogy.jpg','footballogy2.jpg'],s:'Ball and mat tracking on an Android phone',
+ m:'Contract · 2023',
+ a:['Footballogy sells a training mat with numbered zones. The idea of the app: put the phone in front of you, and it watches the ball and tells which zone it is in, so it can count points and check that an exercise was done right.',
+ 'I made the computer vision part and an Android prototype.'],
+ b:['Player pose with MoveNet on TensorFlow Lite.',
+ 'Ball and mat found with OpenCV; the mat is confirmed by matching it to a reference image with SIFT.',
+ 'Camera calibration and SolvePnP give the phone’s position relative to the mat, so the ball can be placed in mat coordinates and its zone highlighted.',
+ 'Over 20 fps on a budget phone.']},
+{id:'trees',t:'Tree detection on satellite images',img:['trees.jpg','trees2.jpg'],s:'Finding single trees and their species',
+ m:'ML Researcher · AeroNet Lab, Skoltech · 2021–2022',
+ a:['Forest inventory means counting trees and knowing their species. On WorldView-2 satellite images (0.5 m per pixel) single trees are hard to see directly, so I went through a height map.'],
+ b:['U-Net predicts a tree height map from the RGB image. It was trained on lidar data for one region and fine-tuned on a smaller, precisely aligned one.',
+ 'Tree tops are local maxima of the height map.',
+ 'VGG11 classifies spruce, birch, fir and pine from small patches around each tree.',
+ 'Checked against hand-labelled plots: detection F1 0.65–0.80.',
+ 'Geodata prepared in QGIS and GDAL.']},
+{id:'roadmadman',t:'Road Madman',img:['roadmadman.jpg'],s:'Pixel runner game for Android',
+ m:'Co-founder, GameFortune Studio · 2014–2015 · <a href="https://www.youtube.com/watch?v=7yo1OlG5gBI">Review on YouTube</a>',
+ a:['A hard pixel runner: you cross an endless multi-lane road, and one hit ends the run. We were three people: me, a designer and a composer. The game was on Google Play.'],
+ b:['All the code, ads, Google Play Games leaderboard and achievements, publishing.',
+ '3,500 downloads, about 140,000 game sessions.']}
+];
+const app=document.getElementById('app');
+function home(){app.innerHTML=`<section class="hero"><h1>Dmitry Verkhoturov</h1>
+<p>AI Engineer · Agent Memory Systems, Multimodal Search &amp; LLM Pipelines</p>
+<p>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a></p></section>
+<section class="box"><div class="grid">${P.map(p=>`
+<a class="c" href="#${p.id}"><div class="fr"><img src="img/${p.img[0]}" alt="${p.t}"></div>
+<div class="t"><b>${p.t}</b><span class="ar">→</span></div><div class="d">${p.s}</div></a>`).join('')}
+</div></section>`}
+function page(p){app.innerHTML=`<section class="pg"><a class="back" href="#">← All projects</a>
+<h2>${p.t}</h2><p class="m">${p.m}</p>
+<div class="gal">${p.img.map(x=>`<div class="fr"><img src="img/${x}" alt="${p.t}"></div>`).join('')}</div>
+<div class="tx">${p.a.map(x=>`<p>${x}</p>`).join('')}<h3>What I did</h3><ul>${p.b.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+<p style="margin:0 0 56px"><a class="back" href="#">← All projects</a></p></section>`}
+function route(){const p=P.find(x=>'#'+x.id===location.hash);p?page(p):home();scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+</script></body></html>
