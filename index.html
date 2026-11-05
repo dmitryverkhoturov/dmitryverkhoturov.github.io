@@ -18,7 +18,7 @@ h1{font:400 clamp(40px,6.5vw,60px)/1.05 Newsreader,Georgia,serif;letter-spacing:
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .c{display:block;background:var(--card);border-radius:4px;overflow:hidden;text-decoration:none}
 .fr{aspect-ratio:16/10;background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden}
-.fr img{width:100%;height:100%;object-fit:contain;display:block}
+.fr img,.fr video{width:100%;height:100%;object-fit:contain;display:block}
 .c .fr{border:0;border-radius:0}
 .c .t{display:flex;justify-content:space-between;align-items:baseline;padding:12px 14px 2px;font-size:13px}
 .c .t b{font-weight:500}
@@ -65,9 +65,9 @@ const P=[
  'Emotions from the face with EmotiEffLib, speech to text with Whisper.',
  'GPT extracts the key comments by topic into JSON with timestamps for the interface.',
  'Similar feedback is clustered on BERT embeddings, and GPT gives each group a name.']},
-{id:'concilium',t:'Concilium',img:['concilium.jpg','concilium2.jpg'],s:'A health agent with long-term memory for one person',
+{id:'concilium',t:'Concilium',img:['concilium.jpg','concilium2.jpg'],s:'A health agent with long-term memory',
  m:'Personal project · 2025–2026 · <a href="https://github.com/dmitryverkhoturov/concilium">GitHub</a>',
- a:['A desktop app for following one person’s health over months. You describe what is going on in your own words. The agent keeps the facts, several possible explanations with the evidence for and against each, and suggests one next step. In the next conversation it continues from what it already knows.',
+ a:['A desktop app for following health over months, with a separate record for each person. You describe what is going on in your own words. The agent keeps the facts, several possible explanations with the evidence for and against each, and suggests one next step. In the next conversation it continues from what it already knows.',
  'It is made for people who don’t work with files or a terminal: a chat and four buttons. In regular use by me and my relatives.'],
  b:['Memory is a folder of markdown notes per person: facts with dates and sources, a registry of hypotheses, one note per hypothesis or treatment, plans and history. When a conversation ends, a background run files it into the notes.',
  'Four skills as buttons: the next step, clarifying questions, research of the hypotheses with sources, remember the conversation. A test is suggested only when it is clear which hypotheses it separates.',
@@ -83,6 +83,16 @@ const P=[
  'A benchmark for smoothness: frame timings and a detector for visual seams, so the agents optimise what the eye actually sees.',
  'To hit the frame rate we built a small game-engine-style renderer: the circle is drawn into tiles at several zoom levels in background threads, and each frame only moves them.',
  'Now 70–90 fps on my phone, under 1 ms of drawing per frame. Seven themes, a home screen widget, the Solar System to scale in the centre.']},
+{id:'hyperschema',t:'Hyperschema',cover:'hyperschema.jpg',img:['hyperschema-flight.mp4','hyperschema-walk.mp4'],s:'An infinite board for notes and diagrams',
+ m:'Personal project · 2026 · in progress · <a href="https://github.com/dmitryverkhoturov/hyperschema">GitHub</a>',
+ a:['An infinite board for notes and diagrams, for Windows and Android. A note can hold other notes, arrows connect them, and you can zoom from the whole board down to one note.',
+ 'In path mode you select a note and walk the board along its arrows. The app remembers each walk.',
+ 'Like the calendar, it is built by AI agents that I direct through a written spec.'],
+ b:['One Rust core for Windows and Android, drawn on the GPU with wgpu.',
+ 'A board of 106 000 notes and 64 000 arrows runs at 57 fps on average.',
+ 'Sync between devices: each board is an Automerge document stored in CouchDB.',
+ 'A command line, so scripts and AI agents can edit boards.',
+ 'Import from Excalidraw, including Obsidian files.']},
 {id:'footballogy',t:'Footballogy',img:['footballogy3.jpg','footballogy.jpg','footballogy2.jpg'],s:'Ball and mat tracking on an Android phone',
  m:'Contract · 2023',
  a:['Footballogy sells a training mat with numbered zones. The idea of the app: put the phone in front of you, and it watches the ball and tells which zone it is in, so it can count points and check that an exercise was done right.',
@@ -110,12 +120,12 @@ function home(){app.innerHTML=`<section class="hero"><h1>Dmitry Verkhoturov</h1>
 <p>AI Engineer · Agent Memory Systems, Multimodal Search &amp; LLM Pipelines</p>
 <p>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a> · GitHub: <a href="https://github.com/dmitryverkhoturov">dmitryverkhoturov</a></p></section>
 <section class="box"><div class="grid">${P.map(p=>`
-<a class="c" href="#${p.id}"><div class="fr"><img src="img/${p.img[0]}" alt="${p.t}"></div>
+<a class="c" href="#${p.id}"><div class="fr"><img src="img/${p.cover||p.img[0]}" alt="${p.t}"></div>
 <div class="t"><b>${p.t}</b><span class="ar">→</span></div><div class="d">${p.s}</div></a>`).join('')}
 </div></section>`}
 function page(p){app.innerHTML=`<section class="pg"><a class="back" href="#">← All projects</a>
 <h2>${p.t}</h2><p class="m">${p.m}</p>
-<div class="gal">${p.img.map(x=>`<div class="fr"><img src="img/${x}" alt="${p.t}"></div>`).join('')}</div>
+<div class="gal">${p.img.map(x=>`<div class="fr">${x.endsWith('.mp4')?`<video src="img/${x}" poster="img/${x.replace('.mp4','.jpg')}" autoplay muted loop playsinline preload="auto"></video>`:`<img src="img/${x}" alt="${p.t}">`}</div>`).join('')}</div>
 <div class="tx">${p.a.map(x=>`<p>${x}</p>`).join('')}<h3>What I did</h3><ul>${p.b.map(x=>`<li>${x}</li>`).join('')}</ul></div>
 <p style="margin:0 0 56px"><a class="back" href="#">← All projects</a></p></section>`}
 function route(){const p=P.find(x=>'#'+x.id===location.hash);p?page(p):home();scrollTo(0,0)}
