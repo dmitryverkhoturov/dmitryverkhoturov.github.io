@@ -83,7 +83,7 @@ const P=[
  'A benchmark for smoothness: frame timings and a detector for visual seams, so the agents optimise what the eye actually sees.',
  'To hit the frame rate we built a small game-engine-style renderer: the circle is drawn into tiles at several zoom levels in background threads, and each frame only moves them.',
  'Now 70–90 fps on my phone, under 1 ms of drawing per frame. Seven themes, a home screen widget, the Solar System to scale in the centre.']},
-{id:'hyperschema',t:'Hyperschema',cover:'hyperschema.jpg',img:['hyperschema-flight.mp4','hyperschema-walk.mp4'],s:'An infinite board for notes and diagrams',
+{id:'hyperschema',t:'Hyperschema',cover:'hyperschema-flight.mp4',img:['hyperschema-flight.mp4','hyperschema-walk.mp4'],s:'An infinite board for notes and diagrams',
  m:'Personal project · 2026 · in progress · <a href="https://github.com/dmitryverkhoturov/hyperschema">GitHub</a>',
  a:['An infinite board for notes and diagrams, for Windows and Android. A note can hold other notes, arrows connect them, and you can zoom from the whole board down to one note.',
  'In path mode you select a note and walk the board along its arrows. The app remembers each walk.',
@@ -120,7 +120,7 @@ function home(){app.innerHTML=`<section class="hero"><h1>Dmitry Verkhoturov</h1>
 <p>AI Engineer · Agent Memory Systems, Multimodal Search &amp; LLM Pipelines</p>
 <p>Email: <a href="mailto:dimaverkhoturov@gmail.com">dimaverkhoturov@gmail.com</a> · Telegram: <a href="https://t.me/dimaverkhoturov">@dimaverkhoturov</a> · GitHub: <a href="https://github.com/dmitryverkhoturov">dmitryverkhoturov</a></p></section>
 <section class="box"><div class="grid">${P.map(p=>`
-<a class="c" href="#${p.id}"><div class="fr"><img src="img/${p.cover||p.img[0]}" alt="${p.t}"></div>
+<a class="c" href="#${p.id}"><div class="fr">${(p.cover||p.img[0]).endsWith('.mp4')?`<video src="img/${p.cover}" poster="img/${p.cover.replace('.mp4','.jpg')}" autoplay muted loop playsinline></video>`:`<img src="img/${p.cover||p.img[0]}" alt="${p.t}">`}</div>
 <div class="t"><b>${p.t}</b><span class="ar">→</span></div><div class="d">${p.s}</div></a>`).join('')}
 </div></section>`}
 function page(p){app.innerHTML=`<section class="pg"><a class="back" href="#">← All projects</a>
